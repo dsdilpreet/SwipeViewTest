@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:SwipeViewTest.ViewModels"
+             mc:Ignorable="d"
+             x:Class="SwipeViewTest.Views.ItemsPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <vm:ItemsViewModel />
+    </ContentPage.BindingContext>
+
+        <CollectionView x:Name="ItemsCollectionView"
+                ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Spacing="0">
+                        <SwipeView BackgroundColor="Transparent" x:Name="SwipeMenu">
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+
+                                <SwipeItemView IsVisible="{Binding Completed}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="Details" HorizontalTextAlignment="Center" FontSize="Caption"></Label>
+                                    </Grid>
+                                </SwipeItemView>
+
+                                <SwipeItemView IsVisible="{Binding RetryAvailable}" Invoked="Retry_Invoked">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Text="Retry" HorizontalTextAlignment="Center" FontSize="Caption"></Label>
+                                        </Grid>
+                                    </SwipeItemView>
+
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Text}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16" />
+                                <Label Text="{Binding Description}" 
+                                d:Text="Item descripton"
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemSelected"></TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+
+                        </SwipeView>
+
+                    </StackLayout>
+                    
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+</ContentPage>
